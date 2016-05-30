@@ -1,5 +1,3 @@
-import com.sun.media.sound.WaveFileWriter;
-import com.sun.org.apache.regexp.internal.RE;
 import it.sauronsoftware.jave.*;
 
 import javax.sound.sampled.*;
@@ -13,16 +11,18 @@ import java.util.Arrays;
  */
 public class OldMain {
 
-    public static int filenum = 0;
-    public static int emptyTol = 8;
-    public static int emptyLen = 20;
-    public static int moveBufferHead = -1000;
-    public static int moveBufferTail = -5000;
-    public static int roundBuffer = 128;
-    public static boolean deleteWav = false;
-    public static boolean createMP3 = true;
+    public int filenum = 0;
+    public int emptyTol = 8;
+    public int emptyLen = 20;
+    public int moveBufferHead = -1000;
+    public int moveBufferTail = -5000;
+    public int roundBuffer = 128;
+    public boolean deleteWav = false;
+    public boolean createMP3 = true;
 
-    public static void main(String[] args) {
+    public OldMain(){}
+
+    public void startOldMain(){
 //        String fileName="2select.mp3";
 //        String fileName="chain1A.mp3";
         String fileName = "chain1.wav";
@@ -129,7 +129,7 @@ public class OldMain {
         }
     }
 
-    public static void newFile(byte[] source, int start, int stop){
+    public void newFile(byte[] source, int start, int stop){
         if(filenum > 100){
             System.out.println("Too many files");
         }
@@ -148,7 +148,7 @@ public class OldMain {
 
     }
 
-    public static void writeWavFile(byte[] resultArray,String name) throws IOException {
+    public void writeWavFile(byte[] resultArray,String name) throws IOException {
 
         createWaveFile(name, resultArray);
 
@@ -158,7 +158,7 @@ public class OldMain {
         }
     }
 
-    public static void convertmp3Lame(String name){
+    public void convertmp3Lame(String name){
         Process p;
         try {
             p = Runtime.getRuntime().exec("lame -v --nogap "+name+".wav");
@@ -175,7 +175,7 @@ public class OldMain {
         } catch (IOException e) {e.printStackTrace();}
     }
 
-    public static void convertToMP3(String name) throws IOException {
+    public void convertToMP3(String name) throws IOException {
         File source = Paths.get(".", "", name+".wav").normalize().toFile();
         System.out.println(source.exists());
         File target = Paths.get(".", "", name+".mp3").normalize().toFile();
@@ -228,7 +228,7 @@ public class OldMain {
             Files.delete(Paths.get(".", "", name+".wav").normalize());
     }
 
-    public static void createWaveFile(String filename, byte[] data) throws IOException {
+    public void createWaveFile(String filename, byte[] data) throws IOException {
         // assumes 44,100 samples per second
         // use 16-bit audio, stereo, signed PCM, little Endian
         AudioFormat format = new AudioFormat(44100, 16, 2, false, false);
@@ -245,7 +245,7 @@ public class OldMain {
         AudioSystem.write(ais, AudioFileFormat.Type.WAVE, new File(filename+".wav"));
     }
 
-    public static void createWaveFileWithHeader(String name, byte[] resultArray) throws IOException {
+    public void createWaveFileWithHeader(String name, byte[] resultArray) throws IOException {
         File f = new File(name+".wav");
         FileOutputStream fos = new FileOutputStream(f);
         WriteWaveFileHeader(fos, 0 , resultArray.length, 44100, 2, 176400);
@@ -254,7 +254,7 @@ public class OldMain {
         fos.close();
     }
 
-    private static void WriteWaveFileHeader(
+    private void WriteWaveFileHeader(
             FileOutputStream out, long totalAudioLen,
             long totalDataLen, long longSampleRate, int channels,
             long byteRate) throws IOException {
